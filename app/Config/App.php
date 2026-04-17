@@ -21,17 +21,6 @@ class App extends BaseConfig
     // Production deployments should override this through .env.
     public string $baseURL = 'http://localhost:8080/';
 
-    //public string $baseURL = 'https://educators-penn-kurt-tracker.trycloudflare.com/';
-
-    // LocalTunnel URL for sharing only.
-    //public string $baseURL = 'https://afraid-zebras-tap.loca.lt/';
-
-    // Ngrok URL for testing only.
-    // public string $baseURL = 'https://sweat-sensuous-dares.ngrok-free.dev/';
-
-    // Example production URL:
-    // public string $baseURL = 'https://hyoyoung.22web.org/';
-
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
