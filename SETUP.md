@@ -33,7 +33,7 @@ Set your database values in `.env`:
 
 ```env
 database.default.hostname = localhost
-database.default.database = inventory_system_db
+database.default.database = database_name
 database.default.username = root
 database.default.password =
 database.default.DBDriver = MySQLi
@@ -133,10 +133,3 @@ cloudinary.folder = 'inventory-system/products'
 ### Charts not appearing
 - refresh the admin dashboard after changes
 - confirm there are completed orders with sales totals
-
-## GitHub Prep
-
-Before publishing:
-- remove real secrets from `.env`
-- review generated uploads you do not want in the repo
-- make sure docs match the final demo URL you plan to show
