@@ -710,7 +710,15 @@ class User extends BaseController
     private function ensureLoggedIn()
     {
         if (!session()->get('isLoggedIn')) {
-            return redirect()->to('auth/login')->with('error', 'Please login first');
+            return redirect()->to('buyer/login')->with('error', 'Please login first');
+        }
+
+        if ((string) session()->get('role') !== 'user') {
+            return match ((string) session()->get('role')) {
+                'admin' => redirect()->to('admin/dashboard')->with('error', 'Buyer access only.'),
+                'staff' => redirect()->to('staff/dashboard')->with('error', 'Buyer access only.'),
+                default => redirect()->to('buyer/login')->with('error', 'Please login as a buyer first'),
+            };
         }
 
         return null;
@@ -825,3 +833,6 @@ class User extends BaseController
         ];
     }
 }
+
+
+

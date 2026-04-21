@@ -60,12 +60,7 @@ class Auth extends BaseController
         }
 
         $user = $userModel->find($userId);
-        session()->set([
-            'id' => $user['id'],
-            'username' => $user['username'],
-            'role' => $user['role'],
-            'isLoggedIn' => true,
-        ]);
+        $this->startAuthenticatedSession($user, 'admin_staff');
 
         return $this->redirectUser($user['role'])->with('success', 'Account created successfully.');
     }
@@ -87,13 +82,7 @@ class Auth extends BaseController
         if (!password_verify($password, $user['password_hash'])) {
             return redirect()->to('login')->with('msg', 'Invalid password');
         }
-
-        $session->set([
-            'id' => $user['id'],
-            'username' => $user['username'],
-            'role' => $user['role'],
-            'isLoggedIn' => true,
-        ]);
+        $this->startAuthenticatedSession($user, 'admin_staff');
 
         return $this->redirectUser($user['role']);
     }
@@ -161,12 +150,7 @@ class Auth extends BaseController
         }
 
         $user = $userModel->find($userId);
-        session()->set([
-            'id' => $user['id'],
-            'username' => $user['username'],
-            'role' => $user['role'],
-            'isLoggedIn' => true,
-        ]);
+        $this->startAuthenticatedSession($user, 'buyer');
 
         return redirect()->to('user/dashboard')->with('success', 'Buyer account created successfully.');
     }
@@ -188,26 +172,42 @@ class Auth extends BaseController
         if (!password_verify($password, $user['password_hash'])) {
             return redirect()->to('buyer/login')->with('msg', 'Invalid password');
         }
-
-        $session->set([
-            'id' => $user['id'],
-            'username' => $user['username'],
-            'role' => $user['role'],
-            'isLoggedIn' => true,
-        ]);
+        $this->startAuthenticatedSession($user, 'buyer');
 
         return redirect()->to('user/dashboard');
     }
 
     public function logout()
     {
-        $role = (string) session()->get('role');
-        session()->destroy();
+        $session = session();
+        $role = (string) $session->get('role');
+        $guard = (string) $session->get('auth_guard');
 
-        return match ($role) {
-            'admin', 'staff' => redirect()->to('login'),
-            default => redirect()->to('browse'),
+        $redirectTo = match (true) {
+            $guard === 'buyer', $role === 'user' => 'buyer/login',
+            $role === 'admin', $role === 'staff' => 'login',
+            default => 'browse',
         };
+
+        $session->remove(['user_id', 'id', 'username', 'role', 'auth_guard', 'isLoggedIn']);
+        $session->destroy();
+
+        return redirect()->to($redirectTo);
+    }
+
+    private function startAuthenticatedSession(array $user, string $guard): void
+    {
+        $session = session();
+        $session->remove(['user_id', 'id', 'username', 'role', 'auth_guard', 'isLoggedIn']);
+        $session->regenerate(true);
+        $session->set([
+            'user_id' => (int) $user['id'],
+            'id' => (int) $user['id'],
+            'username' => $user['username'],
+            'role' => $user['role'],
+            'auth_guard' => $guard,
+            'isLoggedIn' => true,
+        ]);
     }
 
     private function redirectUser(string $role)
@@ -650,3 +650,6 @@ class Auth extends BaseController
         ];
     }
 }
+
+
+

@@ -63,7 +63,7 @@ $routes->group('staff', ['filter' => 'roleAuth:staff'], function($routes) {
 });
 
 // User Route Group with security filter
-$routes->group('user', ['filter' => 'roleAuth:admin,staff,user'], function($routes) {
+$routes->group('user', ['filter' => 'roleAuth:user'], function($routes) {
     // Dashboard
     $routes->get('dashboard', 'User::dashboard');
     $routes->get('products', 'User::productsRedirect');
@@ -81,8 +81,5 @@ $routes->group('user', ['filter' => 'roleAuth:admin,staff,user'], function($rout
     $routes->post('orders/cancel/(:num)', 'User::cancelOrder/$1');
 });
 
-// Global Products Route - accessible to all logged in users
-$routes->get('products', 'Products::index', ['filter' => 'roleAuth:admin,staff,user']);
-
-
-
+// Global Products Route - accessible to buyers only
+$routes->get('products', 'Products::index', ['filter' => 'roleAuth:user']);

@@ -188,36 +188,6 @@
     </div>
 </div>
 
-<!-- Quick Actions -->
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0"><i class="bi bi-lightning-fill"></i> Quick Actions</h5>
-            </div>
-            <div class="card-body">
-                <div class="d-flex flex-wrap gap-2">
-                    <a href="<?= site_url('admin/inventory') ?>" class="btn btn-primary">
-                        <i class="bi bi-box-seam"></i> View Inventory
-                    </a>
-                    <a href="<?= site_url('admin/categories/create') ?>" class="btn btn-success">
-                        <i class="bi bi-tag"></i> Add Category
-                    </a>
-                    <a href="<?= site_url('admin/orders') ?>" class="btn btn-info">
-                        <i class="bi bi-receipt"></i> Manage Orders
-                    </a>
-                    <a href="<?= site_url('admin/users/create') ?>" class="btn btn-warning">
-                        <i class="bi bi-person-plus"></i> Create User
-                    </a>
-                    <a href="<?= site_url('auth/logout') ?>" class="btn btn-danger">
-                        <i class="bi bi-box-arrow-right"></i> Logout
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
     const sevenDaysLabels = <?= $sevenDaysLabels ?>;
     const sevenDaysSales = <?= $sevenDaysSales ?>;
